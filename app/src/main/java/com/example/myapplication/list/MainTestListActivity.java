@@ -1,37 +1,18 @@
 package com.example.myapplication.list;
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Point;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-import androidx.viewpager.widget.ViewPager;
 
-import com.example.myapplication.ChildFragment;
 import com.example.myapplication.R;
-import com.example.myapplication.TestDialog;
-import com.example.myapplication.Testkotlin;
-import com.example.myapplication.refresh.CpsSmartRefreshLayout;
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,9 +22,6 @@ public class MainTestListActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     View line;
     LinearLayout lineLy;
-    int scrollWidth = 0;
-    int scrollX = 0;
-    int totalScrollWidth = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,9 +41,6 @@ public class MainTestListActivity extends AppCompatActivity {
             GridLayoutManager gm = new GridLayoutManager(this, 2);
             gm.setOrientation(LinearLayoutManager.HORIZONTAL);
             recyclerView.setLayoutManager(gm);
-            scrollWidth = ((list.size() / 2) - 5) * itemWidth;
-            int allWidth = (list.size() / 2) * itemWidth;
-            log("allWidth>>>>:" + allWidth);
         }
 
         adapterList.setData(list);
@@ -74,56 +49,34 @@ public class MainTestListActivity extends AppCompatActivity {
                 @Override
                 public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
-//                log("dx>>>:" + dx);
-//                int w = recyclerView.getWidth();
-//                log("w>>>:" + w);
                     log("==========================================");
-                    int extent = recyclerView.computeHorizontalScrollExtent();
-                    log("extent>>>:" + extent);
-                    if (scrollX == 0) {
-                        scrollWidth = extent - scrollWidth;
-                        log("scrollWidth>?>>滑动宽度>>:" + scrollWidth);
-                    }
-                    if (totalScrollWidth == 0) {
-                        totalScrollWidth = lineLy.getWidth() - line.getWidth();
-                    }
-                    log("dx>>>:" + dx);
-                    if (scrollX + dx < 0) {
-                        return;
-                    }
-                    scrollX += dx;
-                    log("scrollX>>>>:" + scrollX);
-
-                    int w = (scrollX * totalScrollWidth) / scrollWidth;
-                    log("100>>>滑动宽度>>:" + w);
-                    if (w < 0) {
-                        w = 0;
-                    }
-                    if (w > totalScrollWidth) {
-                        w = totalScrollWidth;
-                    }
-                    line.setTranslationX(w);
+                    test1();
                 }
             });
         }
     }
 
+    int totalRange = 0;
 
-    public int getScreenWidth() {
-        WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-        if (wm == null) return -1;
-        Point point = new Point();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            wm.getDefaultDisplay().getRealSize(point);
-        } else {
-            wm.getDefaultDisplay().getSize(point);
+    private void test1() {
+        //整体的总宽度，注意是整体，包括在显示区域之外的
+        //滚动条表示的总范围
+        int temp = recyclerView.computeHorizontalScrollRange();
+        if (temp > totalRange) {
+            totalRange = temp;
         }
-        return point.x;
-    }
-
-    private int dp2Px(float dpValue) {
-        final float scale = Resources.getSystem().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
+        //滑块的偏移量
+        int offset = recyclerView.computeHorizontalScrollOffset();
+        //可视区域长度
+        int extent = recyclerView.computeHorizontalScrollExtent();
+        //滑出部分在剩余范围的比例
+        float proportion = (float) (offset * 1.0 / (totalRange - extent));
+        //计算滚动条宽度
+        float transMaxRange = lineLy.getWidth() - line.getWidth();
+        //设置滚动条移动
+        float w = transMaxRange * proportion;
+        log("滑动记录>>>>:" + w);
+        line.setTranslationX(w);
     }
 
     private List<String> buildData() {
