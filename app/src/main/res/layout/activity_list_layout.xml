@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:tag="layout/file_preview_by_h5_0">
+
+    <com.example.myapplication.list.TestMyList
+        android:id="@+id/test_list_recycler_view"
+        android:layout_width="match_parent"
+        android:scrollbars="none"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/test_line_ly"
+        android:background="@drawable/bg_line"
+        android:layout_width="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="3dp">
+
+        <View
+            android:id="@+id/test_line"
+            android:background="@drawable/line"
+            android:layout_width="25dp"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+
+</LinearLayout>

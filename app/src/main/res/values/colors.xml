@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="globalT4">#999999</color>
+    <color name="cp_color_section_bg">#999999</color>
+    <color name="main_color">#4974F5</color>
+    <color name="alivc_blue">#379DF2</color>
+    <color name="alivc_green">#57AB44</color>
+    <color name="alivc_orange">#EE7C33</color>
+    <color name="alivc_red">#E94033</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="alivc_common_bg_cyan">#119797</color>
+    <color name="alivc_common_bg_cyan_light">#00C1DE</color>
+    <color name="main_color_un">#504974F5</color>
+</resources>
